@@ -19,6 +19,8 @@ public class PlayerMovement : MonoBehaviour
     public Canvas GameplayUI;
     public Canvas GameOverCanvas;
     public TextMeshProUGUI scoreTextEnd;
+    public Transform gameCamera;
+
     void Start()
     {
         // Set to be 30 FPS
@@ -105,6 +107,8 @@ public class PlayerMovement : MonoBehaviour
         marioSprite.flipX = false;
         // reset score
         scoreText.text = "Score: 0";
+        gameCamera.position = new Vector3(0, 0, -10);
+
         // reset Goomba
         foreach (Transform eachChild in enemies.transform)
         {

@@ -13,13 +13,16 @@ public class EnemyMovement : MonoBehaviour
 
     private Rigidbody2D enemyBody;
     public Vector3 startPosition = new Vector3(0.0f, 0.0f, 0.0f);
-
+    public SpriteRenderer lamp;
+    public Transform lampLight;
     void Start()
     {
         enemyBody = GetComponent<Rigidbody2D>();
         // get the starting position
         originalX = transform.position.x;
         ComputeVelocity();
+        lamp = lamp.GetComponent<SpriteRenderer>();
+        lampLight = lampLight.GetComponent<Transform>();
     }
     void ComputeVelocity()
     {
@@ -32,7 +35,8 @@ public class EnemyMovement : MonoBehaviour
     void Update()
     {
         if (Mathf.Abs(enemyBody.position.x - originalX) < maxOffset)
-        {// move goomba
+        {
+            // move goomba
             Movegoomba();
         }
         else
@@ -42,5 +46,9 @@ public class EnemyMovement : MonoBehaviour
             ComputeVelocity();
             Movegoomba();
         }
+
+        // Flip the lamp sprite based on the direction.
+        lamp.flipX = (moveRight == 1);
+        lampLight.eulerAngles = new Vector3(0, 0, lamp.flipX ? -90 : 90);
     }
 }

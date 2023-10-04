@@ -12,10 +12,6 @@ public class EnemyMovement : MonoBehaviour
     [Header("Score")]
     public int scoreAmount = 1;
 
-    [Header("Flashlight")]
-    public bool brokenFlashlight;
-    private bool isFlashlightOn = true; // Default to on.
-
     [Header("References")]
     public Transform jumpTarget;
     public GameObject lampObject;
@@ -115,6 +111,7 @@ public class EnemyMovement : MonoBehaviour
 
         if (currentState == GoombaState.Chase)
         {
+            chaseTimer += Time.deltaTime;
             if (enemyBody.position.x > maxChaseX || enemyBody.position.x < minChaseX)
             {
                 ReturnToNormalState();
@@ -267,38 +264,6 @@ public class EnemyMovement : MonoBehaviour
         currentState = GoombaState.Normal;
         walking = true;
         chaseTimer = 0f;
-    }
-
-    private IEnumerator ToggleFlashlight()
-    {
-        while (brokenFlashlight)
-        {
-            isFlashlightOn = !isFlashlightOn;
-            if (isFlashlightOn)
-            {
-                lampObject.SetActive(true);
-            }
-            else
-            {
-                lampObject.SetActive(false);
-            }
-            yield return new WaitForSeconds(4f);
-
-            for (int i = 0; i < 2; i++)
-            {
-                isFlashlightOn = false;
-                lampObject.SetActive(false);
-                yield return new WaitForSeconds(0.2f);
-                isFlashlightOn = true;
-                lampObject.SetActive(true);
-                yield return new WaitForSeconds(0.2f);
-            }
-
-            // Turn off the flashlight for 3 seconds.
-            isFlashlightOn = false;
-            lampObject.SetActive(false);
-            yield return new WaitForSeconds(3f);
-        }
     }
 
     private void CalculateChaseBounds()
